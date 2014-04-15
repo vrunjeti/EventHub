@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidTest5</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="create_event">Create Event</string>
+    <string name="create_event_i">Create an event: choose name, date, and time.</string>
+    <string name="event_name">Enter Event Name</string>
+    <string name="event_date">Enter Event Date</string>
+    <string name="go_to_events">Go to Events</string>
+    <string name="title_activity_event_hub">EventHub</string>
+    <string name="event_hub_i">This is a list of events</string>
+
+</resources>
