@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,51 +34,65 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		final EditText eventNameText = (EditText) findViewById(R.id.editText1);
-		// final DatePicker eventDatePick = (DatePicker)
-		// findViewById(R.id.datePicker1);
 		final EditText eventDateText = (EditText) findViewById(R.id.editText2);
-		final TimePicker eventTimePick = (TimePicker) findViewById(R.id.timePicker1);
+		final EditText eventTimeText = (EditText) findViewById(R.id.editText3);
 
 		final Button launchButton = (Button) findViewById(R.id.button1);
 		final Button eventButton = (Button) findViewById(R.id.button2);
-		//final Button testCalButton = (Button) findViewById(R.id.button3);
-
-		// ________________________________________________________________________________________________________________________
 
 		final Calendar myCalendar = Calendar.getInstance();
 
 		final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
 			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear,
-					int dayOfMonth) {
-				// TODO Auto-generated method stub
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				myCalendar.set(Calendar.YEAR, year);
 				myCalendar.set(Calendar.MONTH, monthOfYear);
 				myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-				
+
 				String myFormat = "MM/dd/yyyy";
 				SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 				eventDateText.setText(sdf.format(myCalendar.getTime()));
+			}
+		};
+
+		final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+				myCalendar.set(Calendar.MINUTE, minute);
+
+				String ampm;
+				if(hourOfDay < 12){
+					ampm = "AM";
+				} else {
+					ampm = "PM";
+				}
+				
+				String myFormat = "hh:mm";
+				
+				SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+				eventTimeText.setText(sdf.format(myCalendar.getTime()) + " " + ampm);
 				
 			}
-
 		};
 
 		eventDateText.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				new DatePickerDialog(MainActivity.this, date, myCalendar
 						.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
 						myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 			}
 		});
 
-	
-
-		// ________________________________________________________________________________________________________________
+		eventTimeText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new TimePickerDialog(MainActivity.this, time, myCalendar
+						.get(Calendar.HOUR_OF_DAY), myCalendar
+						.get(Calendar.MINUTE), false).show();
+			}
+		});
 
 		launchButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -98,16 +113,18 @@ public class MainActivity extends Activity {
 				// int hour = eventTimePick.getCurrentHour();
 				// int minute = eventTimePick.getCurrentMinute();
 
-				final Calendar cal = Calendar.getInstance();
-
-				int year = cal.get(Calendar.YEAR);
-				int month = cal.get(Calendar.MONTH);
-				int day = cal.get(Calendar.DAY_OF_MONTH);
-				int hour = cal.get(Calendar.HOUR_OF_DAY);
-				int minute = cal.get(Calendar.MINUTE);
+				/**
+				 * final Calendar cal = Calendar.getInstance();
+				 * 
+				 * int year = cal.get(Calendar.YEAR); int month =
+				 * cal.get(Calendar.MONTH); int day =
+				 * cal.get(Calendar.DAY_OF_MONTH); int hour =
+				 * cal.get(Calendar.HOUR_OF_DAY); int minute =
+				 * cal.get(Calendar.MINUTE);
+				 */
 
 				// Event event1 = new Event(eventName, eventDate);
-				Event.createEvent(eventName, cal);
+				Event.createEvent(eventName, myCalendar);
 
 				Toast.makeText(MainActivity.this, "Event created.",
 						Toast.LENGTH_LONG).show();

@@ -11,5 +11,6 @@
     <string name="go_to_events">Go to Events</string>
     <string name="title_activity_event_hub">EventHub</string>
     <string name="event_hub_i">This is a list of events</string>
+    <string name="event_time">Enter Event Time</string>
 
 </resources>
