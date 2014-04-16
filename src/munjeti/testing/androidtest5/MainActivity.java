@@ -2,7 +2,6 @@ package munjeti.testing.androidtest5;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -33,49 +32,61 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		final EditText eventNameText = (EditText) findViewById(R.id.editText1);
-		final EditText eventDateText = (EditText) findViewById(R.id.editText2);
-		final EditText eventTimeText = (EditText) findViewById(R.id.editText3);
+		// text fields and buttons from activity_main.xml
+		final EditText eventNameText = (EditText) findViewById(R.id.editText1);//event name
+		final EditText eventDateText = (EditText) findViewById(R.id.editText2);//event date
+		final EditText eventTimeText = (EditText) findViewById(R.id.editText3);//event time
 
-		final Button launchButton = (Button) findViewById(R.id.button1);
-		final Button eventButton = (Button) findViewById(R.id.button2);
+		final Button launchButton = (Button) findViewById(R.id.button1);//create event
+		final Button eventButton = (Button) findViewById(R.id.button2);//go to EventHub
 
+		// deals with time and dates for each event
 		final Calendar myCalendar = Calendar.getInstance();
 
+		// brings up the date picker and sets field text to whatever was input
 		final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 			@Override
-			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				// sets day, month, and year
 				myCalendar.set(Calendar.YEAR, year);
 				myCalendar.set(Calendar.MONTH, monthOfYear);
 				myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
+				// formatting for displaying entered date in text field
 				String myFormat = "MM/dd/yyyy";
 				SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 				eventDateText.setText(sdf.format(myCalendar.getTime()));
 			}
 		};
 
+		// brings up the time picker and sets field text to whatever was input
 		final TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
 			@Override
 			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+				// sets hour and minute.
 				myCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 				myCalendar.set(Calendar.MINUTE, minute);
 
-				String ampm;
-				if(hourOfDay < 12){
-					ampm = "AM";
+				// (!) Note: hour of day is always in 24hr time, so am/pm string
+				// was created separately
+				String AM_PM;
+				if (hourOfDay < 12) {
+					AM_PM = "AM";
 				} else {
-					ampm = "PM";
+					AM_PM = "PM";
 				}
-				
+
+				// formatting for displaying entered time in text field
 				String myFormat = "hh:mm";
-				
 				SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-				eventTimeText.setText(sdf.format(myCalendar.getTime()) + " " + ampm);
-				
+				eventTimeText.setText(sdf.format(myCalendar.getTime()) + " "
+						+ AM_PM);
+
 			}
 		};
 
+		//actually makes the date picker show up when clicked
 		eventDateText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -85,6 +96,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		//actually makes the time picker show up when clicked
 		eventTimeText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -94,69 +106,45 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		//creates the event and stores it in memory
+		//Note: as of now, the events disappear when the app is wiped from phones RAM.
+		//So we need to fix the events to stay in memory until actually deleted
 		launchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/**
-				 * if (eventNameText.getText().toString().equals("")) {
-				 * Toast.makeText
-				 * (MainActivity.this,"Please enter an event name."
-				 * ,Toast.LENGTH_LONG).show(); } else {
-				 */
-
+			
+				//this is where the event's name that was entered in the text field is stored
 				String eventName = eventNameText.getText().toString();
 
-				// int year = eventDatePick.getYear();
-				// int month = eventDatePick.getMonth();
-				// int day = eventDatePick.getDayOfMonth();
-
-				// int hour = eventTimePick.getCurrentHour();
-				// int minute = eventTimePick.getCurrentMinute();
-
-				/**
-				 * final Calendar cal = Calendar.getInstance();
-				 * 
-				 * int year = cal.get(Calendar.YEAR); int month =
-				 * cal.get(Calendar.MONTH); int day =
-				 * cal.get(Calendar.DAY_OF_MONTH); int hour =
-				 * cal.get(Calendar.HOUR_OF_DAY); int minute =
-				 * cal.get(Calendar.MINUTE);
-				 */
-
-				// Event event1 = new Event(eventName, eventDate);
+				//Event objects' parameters are string (name) and calendar (date/time)
+				//myCalendar is all values that were input from user earlier
 				Event.createEvent(eventName, myCalendar);
 
-				Toast.makeText(MainActivity.this, "Event created.",
-						Toast.LENGTH_LONG).show();
+				//creates a pop up message (toast) notifying that an event has been created
+				Toast.makeText(MainActivity.this, "Event created.",	Toast.LENGTH_LONG).show();
 
 				/**
-				 * intent.putExtra("interval", durationBox.getText()
-				 * .toString()); startActivity(intent);
+				 * intent.putExtra("interval", durationBox.getText().toString()); 
+				 * startActivity(intent);
 				 */
 				// }
 			}
 		});
 
-		final Intent intent = new Intent(this, EventHub.class);
-		// final Intent i = new Intent(this, MyAndroidAppActivity.class);
-
+		//Intent for going to EventHub screen (activity_event_hub)
+		final Intent EventHubIntent = new Intent(this, EventHub.class);
+		
+		// when this button is pressed, it goes to the EventHub screen
 		eventButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(intent);
+				startActivity(EventHubIntent);
 			}
 		});
 
 		/**
-		 * testCalButton.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View v) { startActivity(i); } });
-		 */
-
-		/**
 		 * if (savedInstanceState == null) {
-		 * getFragmentManager().beginTransaction() .add(R.id.container, new
-		 * PlaceholderFragment()).commit(); }
+		 * getFragmentManager().beginTransaction() .add(R.id.container, new PlaceholderFragment()).commit(); }
 		 */
 	}
 

@@ -21,21 +21,15 @@ public class EventHub extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_hub);
-
+		
+		//events are in a listView
+		//!!NEED TO CREATE CUSTOM LISTVIEW!!
 		final ListView listview = (ListView) findViewById(R.id.listview);
 
-		/**
-		 * final String[] testListArr = new String[] { "this", "is", "a",
-		 * "test", "for", "listing", "in", "android", "using", "listView", "D=",
-		 * "hopefully", "this", "works" };
-		 */
-
 		final ArrayList<Event> testListEvents = new ArrayList<Event>();
-
 		for (Event e : Event.allEvents) {
 			testListEvents.add(e);
 		}
-
 		final ArrayList<String> testList = new ArrayList<String>();
 
 		for (Event e : Event.allEvents) {
