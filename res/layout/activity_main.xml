@@ -37,13 +37,6 @@
             android:hint="@string/event_name"
             android:inputType="text" />
 
-        <DatePicker
-            android:id="@+id/datePicker1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editText1" />
-
         <TimePicker
             android:id="@+id/timePicker1"
             android:layout_width="wrap_content"
@@ -58,6 +51,17 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:text="@string/go_to_events" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editText1"
+            android:ems="10"
+            android:hint="date"
+            android:inputType="date" />
+
 
     </RelativeLayout>
 

@@ -1,10 +1,13 @@
 package munjeti.testing.androidtest5;
 
-
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,69 +27,120 @@ import android.os.Build;
 
 public class MainActivity extends Activity {
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		final EditText eventNameText = (EditText) findViewById(R.id.editText1);
-		final DatePicker eventDatePick = (DatePicker) findViewById(R.id.datePicker1);
+		// final DatePicker eventDatePick = (DatePicker)
+		// findViewById(R.id.datePicker1);
+		final EditText eventDateText = (EditText) findViewById(R.id.editText2);
 		final TimePicker eventTimePick = (TimePicker) findViewById(R.id.timePicker1);
-		
+
 		final Button launchButton = (Button) findViewById(R.id.button1);
-		final Button eventButton = (Button) findViewById(R.id.button2);//create intent to launch other 
+		final Button eventButton = (Button) findViewById(R.id.button2);
+		//final Button testCalButton = (Button) findViewById(R.id.button3);
+
+		// ________________________________________________________________________________________________________________________
+
+		final Calendar myCalendar = Calendar.getInstance();
+
+		final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				// TODO Auto-generated method stub
+				myCalendar.set(Calendar.YEAR, year);
+				myCalendar.set(Calendar.MONTH, monthOfYear);
+				myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+				
+				String myFormat = "MM/dd/yyyy";
+				SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+				eventDateText.setText(sdf.format(myCalendar.getTime()));
+				
+			}
+
+		};
+
+		eventDateText.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				new DatePickerDialog(MainActivity.this, date, myCalendar
+						.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+						myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+			}
+		});
+
+	
+
+		// ________________________________________________________________________________________________________________
 
 		launchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				/**
-				if (eventNameText.getText().toString().equals("")) {
-					Toast.makeText(MainActivity.this,"Please enter an event name.",Toast.LENGTH_LONG).show();
-				} else {
-				*/
-				
+				 * if (eventNameText.getText().toString().equals("")) {
+				 * Toast.makeText
+				 * (MainActivity.this,"Please enter an event name."
+				 * ,Toast.LENGTH_LONG).show(); } else {
+				 */
+
 				String eventName = eventNameText.getText().toString();
-					
-				int year = eventDatePick.getYear();
-				int month = eventDatePick.getMonth();
-				int day = eventDatePick.getDayOfMonth();
-					
-				int hour = eventTimePick.getCurrentHour();
-				int minute = eventTimePick.getCurrentMinute();
-					
-				@SuppressWarnings("deprecation")
-				Date eventDate = new Date(year, month, day, hour, minute);
-					
-				//Event event1 = new Event(eventName, eventDate);
-				Event.createEvent(eventName, eventDate);
-				
-				Toast.makeText(MainActivity.this,"Event created.",Toast.LENGTH_LONG).show();
-								
+
+				// int year = eventDatePick.getYear();
+				// int month = eventDatePick.getMonth();
+				// int day = eventDatePick.getDayOfMonth();
+
+				// int hour = eventTimePick.getCurrentHour();
+				// int minute = eventTimePick.getCurrentMinute();
+
+				final Calendar cal = Calendar.getInstance();
+
+				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH);
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				int hour = cal.get(Calendar.HOUR_OF_DAY);
+				int minute = cal.get(Calendar.MINUTE);
+
+				// Event event1 = new Event(eventName, eventDate);
+				Event.createEvent(eventName, cal);
+
+				Toast.makeText(MainActivity.this, "Event created.",
+						Toast.LENGTH_LONG).show();
+
 				/**
-				intent.putExtra("interval", durationBox.getText()
-						.toString());
-				startActivity(intent);
-				*/
-			//	}
+				 * intent.putExtra("interval", durationBox.getText()
+				 * .toString()); startActivity(intent);
+				 */
+				// }
 			}
 		});
-		
+
 		final Intent intent = new Intent(this, EventHub.class);
-		
+		// final Intent i = new Intent(this, MyAndroidAppActivity.class);
+
 		eventButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(intent);
 			}
 		});
-		
+
 		/**
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
-		*/
+		 * testCalButton.setOnClickListener(new OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { startActivity(i); } });
+		 */
+
+		/**
+		 * if (savedInstanceState == null) {
+		 * getFragmentManager().beginTransaction() .add(R.id.container, new
+		 * PlaceholderFragment()).commit(); }
+		 */
 	}
 
 	@Override
@@ -108,8 +162,7 @@ public class MainActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */

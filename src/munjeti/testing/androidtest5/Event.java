@@ -1,5 +1,6 @@
 package munjeti.testing.androidtest5;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 //import java.sql.Date;
 
@@ -16,20 +17,21 @@ public class Event {
 	 */
 
 	private String title;
-	private Date date;
+	//private Date date;
+	private Calendar cal;
 	private static int eventCount = 0;
 	public static ArrayList<Event> allEvents = new ArrayList<Event>();
 	
 	//constructor for Event objects
-	public Event(String title, Date date){
+	public Event(String title, Calendar cal){
 		this.setTitle(title);
-		this.setDate(date);
+		this.setCal(cal);
 		eventCount++;
 		allEvents.add(this);
 	}
 	
-	public static Event createEvent(String title, Date date){
-		return new Event(title, date);
+	public static Event createEvent(String title, Calendar cal){
+		return new Event(title, cal);
 	}
 	
 	public String getTitle() {
@@ -40,12 +42,11 @@ public class Event {
 		this.title = title;
 	}
 
-	public Date getDate() {
-		return date;
+	public Calendar getCal(){
+		return this.cal;
 	}
-
-	public void setDate(Date date) {
-		this.date = date;
+	public void setCal(Calendar cal){
+		this.cal = cal;
 	}
 
 	public static int getEventCount() {
