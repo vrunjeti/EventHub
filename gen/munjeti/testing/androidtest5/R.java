@@ -37,9 +37,9 @@ public final class R {
         public static final int listview=0x7f080001;
         public static final int relativeLayout1=0x7f08000a;
         public static final int textView1=0x7f080002;
-        public static final int txtLocation=0x7f08000c;
+        public static final int txtLocation=0x7f08000b;
         public static final int txtTime=0x7f08000d;
-        public static final int txtTitle=0x7f08000b;
+        public static final int txtTitle=0x7f08000c;
     }
     public static final class layout {
         public static final int activity_event_hub=0x7f030000;

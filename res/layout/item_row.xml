@@ -7,21 +7,13 @@
     android:padding="5dip">  
       
     <TextView   
-        android:textAppearance="?android:attr/textAppearanceLarge"   
-        android:layout_height="wrap_content"   
-        android:text="Title"   
-        android:layout_width="wrap_content"   
-        android:id="@+id/txtTitle"
-        android:layout_marginTop="6dip"  
-        android:layout_marginLeft="6dip">  
-    </TextView>  
-      
-    <TextView   
         android:layout_height="wrap_content"   
         android:text="Location"   
         android:layout_width="wrap_content"   
         android:id="@+id/txtLocation" 
         android:layout_below="@+id/txtTitle"
+        android:layout_gravity="bottom|left"
+        android:gravity="bottom|left"
         android:layout_marginTop="3dip"  
         android:layout_marginLeft="6dip">  
     </TextView>
@@ -33,6 +25,21 @@
         android:layout_alignBottom="@+id/txtLocation"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/txtTitle"
+        android:layout_gravity="bottom|right"
+        android:gravity="bottom|left"
+        android:layout_marginTop="16dip"  
+        android:layout_marginRight="6dip"
         android:text="Time" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtLocation"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="top|left"
+        android:gravity="top|left"
+        android:text="Title"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
        
 </RelativeLayout>

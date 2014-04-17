@@ -27,13 +27,14 @@ public class EventHub extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_hub);
 
-		ArrayList<Event> eventList = Event.allEvents;
+		final ArrayList<Event> eventList = Event.allEvents;
 
 		// events are in a listView
 		ListView listview = (ListView) findViewById(R.id.listview);
 
 		List<ListViewItem> items = new ArrayList<EventHub.ListViewItem>();
 
+		
 		for (final Event e : eventList) {
 			items.add(new ListViewItem() {
 				{
@@ -43,6 +44,8 @@ public class EventHub extends Activity {
 				}
 			});
 		}
+		
+
 
 		CustomListViewAdapter adapter = new CustomListViewAdapter(this, items);
 		listview.setAdapter(adapter);
