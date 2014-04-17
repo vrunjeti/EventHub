@@ -1,11 +1,16 @@
 package munjeti.testing.androidtest5;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,46 +26,37 @@ public class EventHub extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_hub);
-		
-		//events are in a listView
-		//!!NEED TO CREATE CUSTOM LISTVIEW!!
-		final ListView listview = (ListView) findViewById(R.id.listview);
-		
-		final ArrayList<Event> eventList = Event.allEvents;
-		
-		final ArrayList<String> testList = new ArrayList<String>();
 
-		for (Event e : eventList) {
-			testList.add(e.getTitle());
+		ArrayList<Event> eventList = Event.allEvents;
+
+		// events are in a listView
+		ListView listview = (ListView) findViewById(R.id.listview);
+
+		List<ListViewItem> items = new ArrayList<EventHub.ListViewItem>();
+
+		for (final Event e : eventList) {
+			items.add(new ListViewItem() {
+				{
+					Title = e.getTitle();
+					Location = e.getLocation();
+					Time = e.printTD();
+				}
+			});
 		}
 
-		final StableArrayAdapter adapter = new StableArrayAdapter(this,
-				android.R.layout.simple_list_item_1, testList);
+		CustomListViewAdapter adapter = new CustomListViewAdapter(this, items);
 		listview.setAdapter(adapter);
-
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, final View view,
-					int position, long id) {
-				final String item = (String) parent.getItemAtPosition(position);
-				view.animate().setDuration(2000).alpha(0)
-						.withEndAction(new Runnable() {
-							@Override
-							public void run() {
-								testList.remove(item);
-								adapter.notifyDataSetChanged();
-								view.setAlpha(1);
-							}
-						});
-			}
-
-		});
 
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+	}
+
+	class ListViewItem {
+		public String Title;
+		public String Location;
+		public String Time;
 	}
 
 	@Override
