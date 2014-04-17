@@ -25,13 +25,15 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f080008;
+        public static final int action_settings=0x7f08000a;
         public static final int button1=0x7f080003;
         public static final int button2=0x7f080005;
         public static final int container=0x7f080000;
-        public static final int editText1=0x7f080004;
-        public static final int editText2=0x7f080006;
-        public static final int editText3=0x7f080007;
+        public static final int editTextDate=0x7f080006;
+        public static final int editTextDescription=0x7f080009;
+        public static final int editTextLocation=0x7f080008;
+        public static final int editTextName=0x7f080004;
+        public static final int editTextTime=0x7f080007;
         public static final int listview=0x7f080001;
         public static final int textView1=0x7f080002;
     }
@@ -51,7 +53,9 @@ public final class R {
         public static final int create_event=0x7f050003;
         public static final int create_event_i=0x7f050004;
         public static final int event_date=0x7f050006;
+        public static final int event_description=0x7f05000c;
         public static final int event_hub_i=0x7f050009;
+        public static final int event_location=0x7f05000b;
         public static final int event_name=0x7f050005;
         public static final int event_time=0x7f05000a;
         public static final int go_to_events=0x7f050007;

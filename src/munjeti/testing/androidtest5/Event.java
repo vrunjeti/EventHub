@@ -9,29 +9,32 @@ public class Event {
 	/**
 	 * This class contains the components of event objects
 	 * @param String title: name of event
-	 * @param Date date: the day and time event is set to
-	 * 
-	 * Constructor for Date objects:
-	 * Date(int year, int month, int date, int hrs, int min)
-	 * 
+	 * @param Calendar cal: the day and time event is set to
+	 *  
 	 */
 
 	private String title;
-	//private Date date;
 	private Calendar cal;
+	private String location;
+	private String description;
+	//private String[] group;  <-- used for handling groups that event is shared to
+	//probably not use string, but people objects or something...
+	
 	private static int eventCount = 0;
 	public static ArrayList<Event> allEvents = new ArrayList<Event>();
 	
 	//constructor for Event objects
-	public Event(String title, Calendar cal){
+	public Event(String title, Calendar cal, String location, String description){
 		this.setTitle(title);
 		this.setCal(cal);
+		this.setLocation(location);
+		this.setDescription(description);
 		eventCount++;
 		allEvents.add(this);
 	}
 	
-	public static Event createEvent(String title, Calendar cal){
-		return new Event(title, cal);
+	public static Event createEvent(String title, Calendar cal, String location, String description){
+		return new Event(title, cal, location, description);
 	}
 	
 	public String getTitle() {
@@ -51,6 +54,22 @@ public class Event {
 
 	public static int getEventCount() {
 		return eventCount;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	

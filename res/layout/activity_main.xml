@@ -28,7 +28,7 @@
             android:text="@string/create_event" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/editTextName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -46,24 +46,45 @@
             android:text="@string/go_to_events" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/editTextDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editText1"
+            android:layout_below="@+id/editTextName"
             android:ems="10"
             android:hint="@string/event_date"
             android:inputType="date" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/editTextTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editText2"
+            android:layout_below="@+id/editTextDate"
             android:ems="10"
             android:hint="@string/event_time"
             android:inputType="time" />
+
+        <EditText
+            android:id="@+id/editTextLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editTextTime"
+            android:hint="@string/event_location"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editTextLocation"
+            android:hint="@string/event_description"
+            android:ems="10" />
 
     </RelativeLayout>
 

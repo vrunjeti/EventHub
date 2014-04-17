@@ -25,14 +25,12 @@ public class EventHub extends Activity {
 		//events are in a listView
 		//!!NEED TO CREATE CUSTOM LISTVIEW!!
 		final ListView listview = (ListView) findViewById(R.id.listview);
-
-		final ArrayList<Event> testListEvents = new ArrayList<Event>();
-		for (Event e : Event.allEvents) {
-			testListEvents.add(e);
-		}
+		
+		final ArrayList<Event> eventList = Event.allEvents;
+		
 		final ArrayList<String> testList = new ArrayList<String>();
 
-		for (Event e : Event.allEvents) {
+		for (Event e : eventList) {
 			testList.add(e.getTitle());
 		}
 

@@ -33,9 +33,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		// text fields and buttons from activity_main.xml
-		final EditText eventNameText = (EditText) findViewById(R.id.editText1);//event name
-		final EditText eventDateText = (EditText) findViewById(R.id.editText2);//event date
-		final EditText eventTimeText = (EditText) findViewById(R.id.editText3);//event time
+		final EditText eventNameText = (EditText) findViewById(R.id.editTextName);//event name
+		final EditText eventDateText = (EditText) findViewById(R.id.editTextDate);//event date
+		final EditText eventTimeText = (EditText) findViewById(R.id.editTextTime);//event time
+		final EditText eventLocationText = (EditText) findViewById(R.id.editTextLocation);//event location
+		final EditText eventDescriptionText = (EditText) findViewById(R.id.editTextDescription);//event location
 
 		final Button launchButton = (Button) findViewById(R.id.button1);//create event
 		final Button eventButton = (Button) findViewById(R.id.button2);//go to EventHub
@@ -115,10 +117,12 @@ public class MainActivity extends Activity {
 			
 				//this is where the event's name that was entered in the text field is stored
 				String eventName = eventNameText.getText().toString();
+				String eventLocation = eventLocationText.getText().toString();
+				String eventDescription = eventDescriptionText.getText().toString();
 
 				//Event objects' parameters are string (name) and calendar (date/time)
 				//myCalendar is all values that were input from user earlier
-				Event.createEvent(eventName, myCalendar);
+				Event.createEvent(eventName, myCalendar, eventLocation, eventDescription);
 
 				//creates a pop up message (toast) notifying that an event has been created
 				Toast.makeText(MainActivity.this, "Event created.",	Toast.LENGTH_LONG).show();

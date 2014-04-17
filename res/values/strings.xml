@@ -12,5 +12,7 @@
     <string name="title_activity_event_hub">EventHub</string>
     <string name="event_hub_i">This is a list of events</string>
     <string name="event_time">Enter Event Time</string>
+    <string name="event_location">Enter Event Location</string>
+    <string name="event_description">Enter Event Description</string>
 
 </resources>
