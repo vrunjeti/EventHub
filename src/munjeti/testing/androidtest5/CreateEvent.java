@@ -21,29 +21,53 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.os.Build;
 
-public class MainActivity extends Activity {
+public class CreateEvent extends Activity {
+
+	private EditText eventNameText;
+	private EditText eventTimeText;
+	private EditText eventDateText;
+	private EditText eventLocationText;
+	private EditText eventDescriptionText;
+	//private Button createEventButton;
+	//private Button eventHubButton;
+	private Calendar myCalendar;
+
+	/**
+	 * // text fields and buttons from activity_main.xml EditText eventNameText;
+	 * EditText eventDateText; EditText eventTimeText; EditText
+	 * eventLocationText; EditText eventDescriptionText;
+	 * 
+	 * Button createEventButton = (Button)
+	 * findViewById(R.id.createEventButton);//create event Button eventHubButton
+	 * = (Button) findViewById(R.id.eventHubButton);//go to EventHub
+	 * 
+	 * // deals with time and dates for each event Calendar myCalendar =
+	 * Calendar.getInstance();
+	 */
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_create_event);
 
-		// text fields and buttons from activity_main.xml
-		final EditText eventNameText = (EditText) findViewById(R.id.editTextName);//event name
-		final EditText eventDateText = (EditText) findViewById(R.id.editTextDate);//event date
-		final EditText eventTimeText = (EditText) findViewById(R.id.editTextTime);//event time
-		final EditText eventLocationText = (EditText) findViewById(R.id.editTextLocation);//event location
-		final EditText eventDescriptionText = (EditText) findViewById(R.id.editTextDescription);//event location
+		eventNameText = (EditText) findViewById(R.id.editTextName);// event name
+		eventDateText = (EditText) findViewById(R.id.editTextDate);// event date
+		eventTimeText = (EditText) findViewById(R.id.editTextTime);// event time
+		eventLocationText = (EditText) findViewById(R.id.editTextLocation);// event location
+		eventDescriptionText = (EditText) findViewById(R.id.editTextDescription);// event location
 
-		final Button launchButton = (Button) findViewById(R.id.button1);//create event
-		final Button eventButton = (Button) findViewById(R.id.button2);//go to EventHub
+		/**
+		createEventButton = (Button) findViewById(R.id.createEventButton);// create event
+		eventHubButton = (Button) findViewById(R.id.eventHubButton);// go to EventHub
+		*/
 
 		// deals with time and dates for each event
-		final Calendar myCalendar = Calendar.getInstance();
+		myCalendar = Calendar.getInstance();
 
 		// brings up the date picker and sets field text to whatever was input
 		final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -88,58 +112,66 @@ public class MainActivity extends Activity {
 			}
 		};
 
-		//actually makes the date picker show up when clicked
+		// actually makes the date picker show up when clicked
 		eventDateText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new DatePickerDialog(MainActivity.this, date, myCalendar
+				new DatePickerDialog(CreateEvent.this, date, myCalendar
 						.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
 						myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 			}
 		});
 
-		//actually makes the time picker show up when clicked
+		// actually makes the time picker show up when clicked
 		eventTimeText.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new TimePickerDialog(MainActivity.this, time, myCalendar
+				new TimePickerDialog(CreateEvent.this, time, myCalendar
 						.get(Calendar.HOUR_OF_DAY), myCalendar
 						.get(Calendar.MINUTE), false).show();
 			}
 		});
 
-		//creates the event and stores it in memory
-		//Note: as of now, the events disappear when the app is wiped from phones RAM.
-		//So we need to fix the events to stay in memory until actually deleted
-		launchButton.setOnClickListener(new OnClickListener() {
+		/**
+		
+		// creates the event and stores it in memory
+		// Note: as of now, the events disappear when the app is wiped from
+		// phones RAM.
+		// So we need to fix the events to stay in memory until actually deleted
+		createEventButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			
-				//this is where the event's name that was entered in the text field is stored
+
+				// this is where the event's name that was entered in the text
+				// field is stored
 				String eventName = eventNameText.getText().toString();
 				String eventLocation = eventLocationText.getText().toString();
 				String eventDescription = eventDescriptionText.getText().toString();
 
-				//Event objects' parameters are string (name) and calendar (date/time)
-				//myCalendar is all values that were input from user earlier
-				Event.createEvent(eventName, myCalendar, eventLocation, eventDescription);
+				// Event objects' parameters are string (name) and calendar
+				// (date/time)
+				// myCalendar is all values that were input from user earlier
+				Event.createEvent(eventName, myCalendar, eventLocation,
+						eventDescription);
 
-				//creates a pop up message (toast) notifying that an event has been created
-				Toast.makeText(MainActivity.this, "Event created.",	Toast.LENGTH_LONG).show();
+				// creates a pop up message (toast) notifying that an event has
+				// been created
+				Toast.makeText(CreateEvent.this, "Event created.",
+						Toast.LENGTH_LONG).show();
 
-				/**
-				 * intent.putExtra("interval", durationBox.getText().toString()); 
-				 * startActivity(intent);
-				 */
+				
+				 intent.putExtra("interval",
+				 durationBox.getText().toString()); startActivity(intent);
+				
 				// }
 			}
 		});
-
-		//Intent for going to EventHub screen (activity_event_hub)
-		final Intent EventHubIntent = new Intent(this, EventHub.class);
 		
+		// Intent for going to EventHub screen (activity_event_hub)
+		final Intent EventHubIntent = new Intent(this, EventHub.class);
+
 		// when this button is pressed, it goes to the EventHub screen
-		eventButton.setOnClickListener(new OnClickListener() {
+		eventHubButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(EventHubIntent);
@@ -148,15 +180,18 @@ public class MainActivity extends Activity {
 
 		/**
 		 * if (savedInstanceState == null) {
-		 * getFragmentManager().beginTransaction() .add(R.id.container, new PlaceholderFragment()).commit(); }
+		 * getFragmentManager().beginTransaction() .add(R.id.container, new
+		 * PlaceholderFragment()).commit(); }
 		 */
+		
+		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.create_event_actions, menu);
 		return true;
 	}
 
@@ -165,11 +200,36 @@ public class MainActivity extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_done:
+
+			// creates the event and stores it in memory
+			// Note: as of now, the events disappear when the app is wiped from
+			// phones RAM.
+			// So we need to fix the events to stay in memory until actually
+			// deleted
+
+			String eventName = eventNameText.getText().toString();
+			String eventLocation = eventLocationText.getText().toString();
+			String eventDescription = eventDescriptionText.getText().toString();
+
+			// Event objects' parameters are string (name) and calendar
+			// (date/time)
+			// myCalendar is all values that were input from user earlier
+			Event.createEvent(eventName, myCalendar, eventLocation,	eventDescription);
+
+			// creates a pop up message (toast) notifying that an event has been
+			// created
+			Toast.makeText(CreateEvent.this, "Event created.", Toast.LENGTH_LONG).show();
+
+			// Intent for going to EventHub screen (activity_event_hub)
+			final Intent EventHubIntent = new Intent(this, EventHub.class);
+			startActivity(EventHubIntent);
+		
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**

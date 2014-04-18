@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_new"
+        android:icon="@drawable/ic_action_new_dark"
+        android:showAsAction="always"
+        android:title="create event"/>
+
+</menu>

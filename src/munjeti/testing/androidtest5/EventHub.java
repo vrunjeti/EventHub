@@ -9,6 +9,7 @@ import java.util.Locale;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -66,7 +67,7 @@ public class EventHub extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.event_hub, menu);
+		getMenuInflater().inflate(R.menu.event_hub_actions, menu);
 		return true;
 	}
 
@@ -75,11 +76,14 @@ public class EventHub extends Activity {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+		switch (item.getItemId()) {
+        case R.id.action_new:
+            Intent createEventIntent = new Intent(this, CreateEvent.class);
+            startActivity(createEventIntent);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
 	}
 
 	/**
