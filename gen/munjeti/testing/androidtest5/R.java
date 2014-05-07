@@ -232,9 +232,9 @@ containing a value of this type.
         public static final int ic_launcher=0x7f02002b;
     }
     public static final class id {
-        public static final int action_done=0x7f04002a;
-        public static final int action_new=0x7f04002c;
-        public static final int action_settings=0x7f04002b;
+        public static final int action_done=0x7f04002b;
+        public static final int action_new=0x7f04002d;
+        public static final int action_settings=0x7f04002c;
         public static final int authButton=0x7f04000a;
         public static final int com_facebook_body_frame=0x7f04001e;
         public static final int com_facebook_button_xout=0x7f040020;
@@ -267,6 +267,7 @@ containing a value of this type.
         public static final int editTextLocation=0x7f040008;
         public static final int editTextName=0x7f040005;
         public static final int editTextTime=0x7f040007;
+        public static final int item_delete=0x7f04002a;
         public static final int large=0x7f040002;
         public static final int listview=0x7f04000b;
         public static final int normal=0x7f040001;
@@ -301,9 +302,10 @@ containing a value of this type.
         public static final int item_row=0x7f030013;
     }
     public static final class menu {
-        public static final int create_event_actions=0x7f090000;
-        public static final int event_hub=0x7f090001;
-        public static final int event_hub_actions=0x7f090002;
+        public static final int contextual_menu=0x7f090000;
+        public static final int create_event_actions=0x7f090001;
+        public static final int event_hub=0x7f090002;
+        public static final int event_hub_actions=0x7f090003;
     }
     public static final class string {
         public static final int action_settings=0x7f07001c;

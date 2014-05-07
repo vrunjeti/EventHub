@@ -1,10 +1,13 @@
 package munjeti.testing.androidtest5;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.HashMap;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -17,6 +20,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.view.ActionMode;
+import android.view.MenuInflater;
+
+
+import android.widget.AbsListView.MultiChoiceModeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
 
 import com.firebase.client.Firebase;
 import com.firebase.simplelogin.FirebaseSimpleLoginError;
@@ -34,6 +47,9 @@ public class EventHub extends FragmentActivity {
     private static final String FIREBASE_EVENTS_URL = "https://blinding-fire-5881.firebaseio.com/eventlist";
     private static final String FIREBASE_GROUP_URL = "https://blinding-fire-5881.firebaseio.com/group1";
     
+    private SelectionAdapter adapter; 
+	public Set<Integer> results;
+
     
     //private Firebase ref = new Firebase(FIREBASE_GROUP_URL);
     
@@ -51,7 +67,7 @@ public class EventHub extends FragmentActivity {
 		final ArrayList<Event> eventList = Event.allEvents;
 
 		// events are in a listView
-		ListView listview = (ListView) findViewById(R.id.listview);
+		final ListView listview = (ListView) findViewById(R.id.listview);
 
 		List<ListViewItem> items = new ArrayList<EventHub.ListViewItem>();
 
@@ -184,14 +200,102 @@ public class EventHub extends FragmentActivity {
 		}
 		
 		ref.push().setValue(items);
+		
+		
 
-		CustomListViewAdapter adapter = new CustomListViewAdapter(this, items);
+		CustomListViewAdapter listadapter = new CustomListViewAdapter(this, items);
+		listview.setAdapter(listadapter);
+
+		adapter = new SelectionAdapter(this, R.layout.item_row, R.id.textView1, items);
 		listview.setAdapter(adapter);
+		listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+		registerForContextMenu(listview);
+		
+		listview.setMultiChoiceModeListener(new MultiChoiceModeListener() {
+		    private int nr = 0;
+            
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+             
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                // TODO Auto-generated method stub
+                 adapter.clearSelection();
+            }
+             
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                // TODO Auto-generated method stub
+                 
+                nr = 0;
+                MenuInflater inflater = getMenuInflater();
+                inflater.inflate(R.menu.contextual_menu, menu);
+                return true;
+            }
+            
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                // TODO Auto-generated method stub
+                switch (item.getItemId()) {
+                 
+                    case R.id.item_delete:
+                    	nr = 0;
+                    	int[] resultsArray = new int[results.size()];
+                    	results.toArray();
+                        for (int i=0; i<results.size(); i++) {
+                        	Event.allEvents.remove(resultsArray[i]);
+                        }
+                        adapter.clearSelection();
+                        mode.finish();
+                        return true;
+                    default:
+                        return false;
+                }
+				
+            }
+             
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position,
+                    long id, boolean checked) {
+                // TODO Auto-generated method stub
+            	
+                 if (checked) {
+                        nr++;
+                        adapter.setNewSelection(position, checked);                    
+                    } else {
+                        nr--;
+                        adapter.removeSelection(position);                 
+                    }
+                 		results = adapter.getCurrentCheckedPosition();
+                    mode.setTitle(nr + " selected");
+                 
+            }
 
+            
+		});
+	
+		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
+	    	   
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                    int position, long arg3) {
+                // TODO Auto-generated method stub
+                 
+                listview.setItemChecked(position, !adapter.isPositionChecked(position));
+                return false;
+            }
+        });
+
+		
+		
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		
 	}
 	
 	 @Override
@@ -245,6 +349,80 @@ public class EventHub extends FragmentActivity {
 			return rootView;
 		}
 	}
+	
+	private class SelectionAdapter extends ArrayAdapter<ListViewItem> {
+	   	 
+        private HashMap<Integer, Boolean> mSelection = new HashMap<Integer, Boolean>();
+        
+    	LayoutInflater inflater;
+    	List<ListViewItem> items;
+        
+        
+        public SelectionAdapter(Context context, int resource,
+                int textViewResourceId, List<ListViewItem> items) {
+            super(context, resource, textViewResourceId, items);
+            this.items = items;
+            this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+        
+        @Override  
+        public int getCount() {  
+            // TODO Auto-generated method stub
+            return items.size();  
+        }  
+      
+          
+        public void setNewSelection(int position, boolean value) {
+            mSelection.put(position, value);
+            notifyDataSetChanged();
+        }
+ 
+        public boolean isPositionChecked(int position) {
+            Boolean result = mSelection.get(position);
+            return result == null ? false : result;
+        }
+ 
+        public Set<Integer> getCurrentCheckedPosition() {
+            return mSelection.keySet();
+        }
+ 
+        public void removeSelection(int position) {
+            mSelection.remove(position);
+            notifyDataSetChanged();
+        }
+ 
+        public void clearSelection() {
+            mSelection = new HashMap<Integer, Boolean>();
+            notifyDataSetChanged();
+        }
+ 
+        
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+        	ListViewItem item = items.get(position);
+        	
+        	View vi=convertView;
+            
+            if(convertView==null)
+                vi = inflater.inflate(R.layout.item_row, null);
+                
+            TextView txtTitle = (TextView) vi.findViewById(R.id.txtTitle);
+            TextView txtLocation = (TextView) vi.findViewById(R.id.txtLocation);
+            TextView txtTime = (TextView) vi.findViewById(R.id.txtTime);
+            
+            txtTitle.setText(item.Title);
+            txtLocation.setText(item.Location);
+            txtTime.setText(item.Time);
+        	
+            vi.setBackgroundColor(getResources().getColor(android.R.color.background_light)); //default color
+            
+            if (mSelection.get(position) != null) {
+            	vi.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_light));
+            }
+            return vi;
+        }
+    }
+
 	
 	 private void setupUsername() {
 	        SharedPreferences prefs = getApplication().getSharedPreferences("EventPrefs", 0);
