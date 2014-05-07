@@ -1,46 +1,53 @@
 package munjeti.testing.androidtest5;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import android.content.SharedPreferences;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.ValueEventListener;
-import com.firebase.simplelogin.FirebaseSimpleLoginError;
-import com.firebase.simplelogin.FirebaseSimpleLoginUser;
-import com.firebase.simplelogin.SimpleLogin;
-import com.firebase.simplelogin.SimpleLoginAuthenticatedHandler;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.os.Build;
 
-public class EventHub extends Activity {
+import com.firebase.client.Firebase;
+import com.firebase.simplelogin.FirebaseSimpleLoginError;
+import com.firebase.simplelogin.FirebaseSimpleLoginUser;
+import com.firebase.simplelogin.SimpleLogin;
+import com.firebase.simplelogin.SimpleLoginAuthenticatedHandler;
+
+import com.facebook.*;
+import com.facebook.model.*;
+
+public class EventHub extends FragmentActivity {
 	
     private static final String FIREBASE_URL = "https://blinding-fire-5881.firebaseio.com";
     private static final String FIREBASE_EVENT_LIST_URL = "blinding-fire-5881.firebaseio.com/\"Event%20List\"";
     private static final String FIREBASE_EVENTS_URL = "https://blinding-fire-5881.firebaseio.com/eventlist";
-    private Firebase ref = new Firebase(FIREBASE_EVENTS_URL);
+    private static final String FIREBASE_GROUP_URL = "https://blinding-fire-5881.firebaseio.com/group1";
+    
+    
+    //private Firebase ref = new Firebase(FIREBASE_GROUP_URL);
+    
+    private Firebase ref = new Firebase(FIREBASE_URL).child("testList1");
+    
+    private String username;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_hub);
 
+		setupUsername();
+		
 		final ArrayList<Event> eventList = Event.allEvents;
 
 		// events are in a listView
@@ -123,7 +130,35 @@ public class EventHub extends Activity {
 			});
 		
 		*/
+		
+		/**
+		
 		final SimpleLogin authClient = new SimpleLogin(ref, getApplicationContext());
+		
+		// start Facebook Login
+		  Session.openActiveSession(this, true, new Session.StatusCallback() {
+
+		    // callback when session changes state
+		    @Override
+		    public void call(Session session, SessionState state, Exception exception) {
+		    	if (session.isOpened()) {
+		    		// make request to the /me API
+		    		Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+		    		  // callback after Graph API response with user object
+		    		  @Override
+		    		  public void onCompleted(GraphUser user, Response response) {
+		    		  }
+		    		}).executeAsync();
+		    		}
+		    }
+		  });
+		  
+		  
+		  
+		
+		//final SimpleLogin authClient = new SimpleLogin(ref, getApplicationContext());
+		
 		
 		authClient.loginWithEmail("ajv.cs196@gmail.com", "ca$hmoney$wag", new SimpleLoginAuthenticatedHandler() {
 			  public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
@@ -135,6 +170,8 @@ public class EventHub extends Activity {
 			    }
 			  }
 			});
+		
+		*/
 		
 		for (final Event e : eventList) {
 			items.add(new ListViewItem() {
@@ -156,6 +193,12 @@ public class EventHub extends Activity {
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 	}
+	
+	 @Override
+	  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	      super.onActivityResult(requestCode, resultCode, data);
+	      Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+	  }
 
 	class ListViewItem {
 		public String Title;
@@ -202,5 +245,16 @@ public class EventHub extends Activity {
 			return rootView;
 		}
 	}
+	
+	 private void setupUsername() {
+	        SharedPreferences prefs = getApplication().getSharedPreferences("EventPrefs", 0);
+	        username = prefs.getString("username", null);
+	        if (username == null) {
+	            Random r = new Random();
+	            // Assign a random user name if we don't have one saved.
+	            username = "User" + r.nextInt(100000);
+	            prefs.edit().putString("username", username).commit();
+	        }
+	    }
 
 }
