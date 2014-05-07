@@ -1,5 +1,10 @@
 package munjeti.testing.androidtest5;
 
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.*;
+//import ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,12 +24,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.os.Build;
 
 public class EventHub extends Activity {
+	
+	// TODO: change this to your own Firebase URL
+    private static final String FIREBASE_URL = "https://blinding-fire-5881.firebaseio.com";
+
+    private String username;
+    private Firebase ref;
+    private ValueEventListener connectedListener;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		  connectedListener = ref.getRoot().child(".info/connected").addValueEventListener(new ValueEventListener() {
+	            @Override
+	            public void onDataChange(DataSnapshot dataSnapshot) {
+	                boolean connected = (Boolean)dataSnapshot.getValue();
+	                if (connected) {
+	                    Toast.makeText(EventHub.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
+	                } else {
+	                    Toast.makeText(EventHub.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
+	                }
+	            }
+
+	            @Override
+	            public void onCancelled() {
+	                // No-op
+	            }
+	        });
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_hub);
 
@@ -34,6 +66,8 @@ public class EventHub extends Activity {
 		ListView listview = (ListView) findViewById(R.id.listview);
 
 		List<ListViewItem> items = new ArrayList<EventHub.ListViewItem>();
+		
+		ref = new Firebase(FIREBASE_URL);
 
 		
 		for (final Event e : eventList) {
@@ -46,7 +80,7 @@ public class EventHub extends Activity {
 			});
 		}
 		
-
+		ref.push().setValue(items);
 
 		CustomListViewAdapter adapter = new CustomListViewAdapter(this, items);
 		listview.setAdapter(adapter);
