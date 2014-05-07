@@ -199,9 +199,11 @@ public class EventHub extends FragmentActivity {
 			});
 		}
 		
-		ref.push().setValue(items);
+		final Firebase refref = ref.push();
 		
+		//ref.push().setValue(items);
 		
+		refref.setValue(items);
 
 		CustomListViewAdapter listadapter = new CustomListViewAdapter(this, items);
 		listview.setAdapter(listadapter);
@@ -250,6 +252,9 @@ public class EventHub extends FragmentActivity {
                         }
                         adapter.clearSelection();
                         mode.finish();
+                        
+                        refref.removeValue();
+                        
                         return true;
                     default:
                         return false;
