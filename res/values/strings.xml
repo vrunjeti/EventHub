@@ -14,5 +14,6 @@
     <string name="event_time">Enter Event Time</string>
     <string name="event_location">Enter Event Location</string>
     <string name="event_description">Enter Event Description</string>
+    <string name="app_id">1504369446459024</string>
 
 </resources>

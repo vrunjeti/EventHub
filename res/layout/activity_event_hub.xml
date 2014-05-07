@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     tools:context="munjeti.testing.androidtest5.EventHub"
     tools:ignore="MergeRootFrame" >
-
+	
+    <com.facebook.widget.LoginButton
+        android:id="@+id/authButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        />
+    
     <ListView 
 	    android:id="@+id/listview"
 	    android:layout_width="wrap_content"

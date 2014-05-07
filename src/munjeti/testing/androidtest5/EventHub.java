@@ -6,7 +6,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.ValueEventListener;
+import com.firebase.simplelogin.FirebaseSimpleLoginError;
+import com.firebase.simplelogin.FirebaseSimpleLoginUser;
+import com.firebase.simplelogin.SimpleLogin;
+import com.firebase.simplelogin.SimpleLoginAuthenticatedHandler;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -43,6 +49,92 @@ public class EventHub extends Activity {
 		List<ListViewItem> items = new ArrayList<EventHub.ListViewItem>();
 
 		//ref = new Firebase(FIREBASE_EVENT_LIST_URL);
+		
+		/**
+		
+		ref.child(".info/authenticated").addValueEventListener(new ValueEventListener() {
+			
+			@Override
+			public void onDataChange(DataSnapshot arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onCancelled() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		final SimpleLogin authClient = new SimpleLogin(ref, getApplicationContext());
+		
+		/**
+		final SimpleLoginAuthenticatedHandler simpleLoginAuthenticatedHandler = new SimpleLoginAuthenticatedHandler() {                        
+		        @SuppressWarnings("unused")
+				public void authenticated(Error error, FirebaseSimpleLoginUser user) {
+		                System.out.println("Error: " + error);
+		                System.out.println("User: " + user);            
+		                System.out.println("3rdP: " + user.getThirdPartyUserData());
+		        }
+
+				@Override
+				public void authenticated(FirebaseSimpleLoginError arg0,
+						FirebaseSimpleLoginUser arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+		 };
+		
+		// authClient.checkAuthStatus(simpleLoginAuthenticatedHandler);
+		 * 
+		 * 
+		 */
+		
+		/**
+		authClient.checkAuthStatus(new SimpleLoginAuthenticatedHandler() {
+			  public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
+			    if (error != null) {
+			      // Oh no! There was an error performing the check
+			    } else if (user == null) {
+			      // No user is logged in
+			    } else {
+			      // There is a logged in user
+			    }
+			  }
+
+			@SuppressWarnings("unused")
+			public void authenticated1(FirebaseSimpleLoginError arg0,
+					FirebaseSimpleLoginUser arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+			});
+		
+		authClient.createUser("ajv.cs196@gmail.com", "ca$hmoney$wag", new SimpleLoginAuthenticatedHandler() {
+			  public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
+			    if(error != null) {
+			      // There was an error creating this account
+			    }
+			    else {
+			      // We are now logged in
+			    }
+			  }
+			});
+		
+		*/
+		final SimpleLogin authClient = new SimpleLogin(ref, getApplicationContext());
+		
+		authClient.loginWithEmail("ajv.cs196@gmail.com", "ca$hmoney$wag", new SimpleLoginAuthenticatedHandler() {
+			  public void authenticated(FirebaseSimpleLoginError error, FirebaseSimpleLoginUser user) {
+			    if(error != null) {
+			      // There was an error logging into this account
+			    }
+			    else {
+			    	
+			    }
+			  }
+			});
 		
 		for (final Event e : eventList) {
 			items.add(new ListViewItem() {
