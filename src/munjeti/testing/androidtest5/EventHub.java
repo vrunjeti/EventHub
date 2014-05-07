@@ -1,15 +1,12 @@
 package munjeti.testing.androidtest5;
 
-
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.*;
-//import ValueEventListener;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+
+import com.firebase.client.Firebase;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -24,39 +21,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.os.Build;
 
 public class EventHub extends Activity {
 	
-	// TODO: change this to your own Firebase URL
     private static final String FIREBASE_URL = "https://blinding-fire-5881.firebaseio.com";
-
-    private String username;
-    private Firebase ref;
-    private ValueEventListener connectedListener;
-
-
+    private static final String FIREBASE_EVENT_LIST_URL = "blinding-fire-5881.firebaseio.com/\"Event%20List\"";
+    private static final String FIREBASE_EVENTS_URL = "https://blinding-fire-5881.firebaseio.com/eventlist";
+    private Firebase ref = new Firebase(FIREBASE_EVENTS_URL);
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
-		  connectedListener = ref.getRoot().child(".info/connected").addValueEventListener(new ValueEventListener() {
-	            @Override
-	            public void onDataChange(DataSnapshot dataSnapshot) {
-	                boolean connected = (Boolean)dataSnapshot.getValue();
-	                if (connected) {
-	                    Toast.makeText(EventHub.this, "Connected to Firebase", Toast.LENGTH_SHORT).show();
-	                } else {
-	                    Toast.makeText(EventHub.this, "Disconnected from Firebase", Toast.LENGTH_SHORT).show();
-	                }
-	            }
-
-	            @Override
-	            public void onCancelled() {
-	                // No-op
-	            }
-	        });
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_hub);
 
@@ -66,9 +41,8 @@ public class EventHub extends Activity {
 		ListView listview = (ListView) findViewById(R.id.listview);
 
 		List<ListViewItem> items = new ArrayList<EventHub.ListViewItem>();
-		
-		ref = new Firebase(FIREBASE_URL);
 
+		//ref = new Firebase(FIREBASE_EVENT_LIST_URL);
 		
 		for (final Event e : eventList) {
 			items.add(new ListViewItem() {
